@@ -2,7 +2,7 @@ streamlit
 numpy
 pandas
 altair
-subprocess
-os.path
+subprocess.run
+os.path2
 wget
 unzip
