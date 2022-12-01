@@ -1,0 +1,6 @@
+streamlit
+numpy
+pandas
+altair
+subprocess
+os.path
