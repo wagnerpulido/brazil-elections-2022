@@ -2,8 +2,9 @@ import streamlit as st
 import numpy as np
 import pandas as pd
 import altair as alt
-import subprocess
 import os.path
+import wget
+import zipfile
 
 bus = [
 'bweb_2t_AC_311020221535', 'bweb_2t_AL_311020221535', 'bweb_2t_AM_311020221535', 'bweb_2t_AP_311020221535',
@@ -72,34 +73,21 @@ cores = ['#00bfff', '#120075', '#c4122d','#FE8E6D', '#00aa4f', '#3b484e','#F3701
 
 root_host = "https://cdn.tse.jus.br/estatistica/sead/eleicoes/eleicoes2022/buweb/"
 
-# https://www.scrapingbee.com/blog/python-wget/
-def runcmd(cmd, verbose = True, *args, **kwargs):
-    process = subprocess.Popen(
-        cmd,
-        stdout = subprocess.PIPE,
-        stderr = subprocess.PIPE,
-        text = True,
-        shell = True
-    )
-    std_out, std_err = process.communicate()
-    if verbose:
-        print(std_out.strip(), std_err)
-    pass
-
 def call_data(item):
     if not os.path.exists(item + ".zip"):
-        runcmd("wget " + root_host + item + ".zip", verbose = True)
+        wget.download(f'{root_host}{item}.zip')
     if not os.path.exists(item + ".csv"):
-        runcmd("unzip -o " + item + ".zip", verbose = True)
+        with zipfile.ZipFile(f'{item}.zip', 'r') as zip_ref:
+            zip_ref.extractall('data')
 
 def read_df(file_name, cargo):
-    iter_csv = pd.read_csv(file_name + ".csv", sep=';', encoding='latin-1', iterator=True, chunksize=10000)
+    iter_csv = pd.read_csv('data/' + file_name + ".csv", sep=';', encoding='latin-1', iterator=True, chunksize=10000)
     dataframe = pd.concat([chunk[chunk["DS_CARGO_PERGUNTA"] == cargo] for chunk in iter_csv])
     dataframe = dataframe.drop(columns=drop_col)
     return dataframe
 
 def read_cidades(file_name):
-    iter_csv = pd.read_csv(file_name + ".csv", sep=';', encoding='latin-1', iterator=True, chunksize=10000)
+    iter_csv = pd.read_csv('data/' + file_name + ".csv", sep=';', encoding='latin-1', iterator=True, chunksize=10000)
     dataframe = pd.concat([chunk[chunk["DS_CARGO_PERGUNTA"] == 'Presidente'] for chunk in iter_csv])
     dataframe = dataframe.drop(columns=drop_not_cidade)
     cidades = dataframe['NM_MUNICIPIO'].unique().tolist()
