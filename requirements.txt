@@ -5,4 +5,3 @@ altair
 subprocess.run
 os.path2
 wget
-zipfile
