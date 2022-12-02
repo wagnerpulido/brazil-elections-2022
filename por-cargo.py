@@ -1,10 +1,7 @@
-import pandas
 import streamlit as st
 import numpy as np
 import pandas as pd
 import altair as alt
-import subprocess
-
 import subprocess
 import os.path
 
@@ -76,7 +73,7 @@ cores = ['#00bfff', '#120075', '#c4122d','#FE8E6D', '#00aa4f', '#3b484e','#F3701
 root_host = "https://cdn.tse.jus.br/estatistica/sead/eleicoes/eleicoes2022/buweb/"
 
 # https://www.scrapingbee.com/blog/python-wget/
-def runcmd(cmd, verbose = False, *args, **kwargs):
+def runcmd(cmd, verbose = True, *args, **kwargs):
     process = subprocess.Popen(
         cmd,
         stdout = subprocess.PIPE,
