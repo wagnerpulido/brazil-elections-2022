@@ -7,3 +7,5 @@ os.path2
 wget
 geopandas
 gdown
+folium
+streamlit_folium
