@@ -19,8 +19,7 @@ citys = st.sidebar.multiselect('Cidades', get_cidades(uf_escolhida))
 show_mapa = st.sidebar.checkbox('Mostrar mapa')
 show_distribuicao = st.sidebar.checkbox('Mostrar distribuição')
 
-# df padrão
-sem_capital = st.checkbox('Sem a capital')
+col1, col2, col3 = st.columns(3)
 
 # tratamento dos dados
 file_name = get_file_name(turno_escolhido, uf_escolhida)
@@ -30,34 +29,36 @@ add_modelo_urna(dataframe)
 add_is2020(dataframe)
 
 # Selecionar candidato
-filtrar_candidato = st.checkbox('filtrar por canditado')
-candidatos = dataframe['NM_VOTAVEL'].unique().tolist()
-if filtrar_candidato:
-    candidato_escolhido = st.multiselect('Selecionar candidatos', candidatos)
-    dataframe = dataframe[dataframe['NM_VOTAVEL'].isin(candidato_escolhido)]
-
+with col1:
+    filtrar_candidato = st.checkbox('filtrar por canditado')
+    candidatos = dataframe['NM_VOTAVEL'].unique().tolist()
+    if filtrar_candidato:
+        candidato_escolhido = st.multiselect('Selecionar candidatos', candidatos)
+        dataframe = dataframe[dataframe['NM_VOTAVEL'].isin(candidato_escolhido)]
 
 # Selecionar Zona
-filtrar_por_zona = st.checkbox('filtrar por zona')
-zonas = dataframe['NR_ZONA'].unique().tolist()
-if filtrar_por_zona:
-    zona_escolhida = st.multiselect('Selecione a zona', zonas)
-    dataframe = dataframe[dataframe['NR_ZONA'].isin(zona_escolhida)]
-
+with col2:
+    filtrar_por_zona = st.checkbox('filtrar por zona')
+    zonas = dataframe['NR_ZONA'].unique().tolist()
+    if filtrar_por_zona:
+        zona_escolhida = st.multiselect('Selecione a zona', zonas)
+        dataframe = dataframe[dataframe['NR_ZONA'].isin(zona_escolhida)]
 # Selecionar Seção
-filtrar_por_secao = st.checkbox('filtrar por seção')
-secoes = dataframe['NR_SECAO'].unique().tolist()
-if filtrar_por_secao:
-    secao_escolhida = st.multiselect('Selecione a seção', secoes)
-    dataframe = dataframe[dataframe['NR_SECAO'].isin(secao_escolhida)]
-
+    filtrar_por_secao = st.checkbox('filtrar por seção')
+    secoes = dataframe['NR_SECAO'].unique().tolist()
+    if filtrar_por_secao:
+        secao_escolhida = st.multiselect('Selecione a seção', secoes)
+        dataframe = dataframe[dataframe['NR_SECAO'].isin(secao_escolhida)]
 
 # Selecionar Modelo de Urna
-filtrar_por_modelo_urna = st.checkbox('filtrar por modelo de urna')
-modelos_urna = dataframe['DS_MODELO_URNA'].unique().tolist()
-if filtrar_por_modelo_urna:
-    modelo_escolhido = st.multiselect('Selecione o modelo', modelos_urna)
-    dataframe = dataframe[dataframe['DS_MODELO_URNA'].isin(modelo_escolhido)]
+with col3:
+    filtrar_por_modelo_urna = st.checkbox('filtrar por modelo de urna')
+    modelos_urna = dataframe['DS_MODELO_URNA'].unique().tolist()
+    if filtrar_por_modelo_urna:
+        modelo_escolhido = st.multiselect('Selecione o modelo', modelos_urna)
+        dataframe = dataframe[dataframe['DS_MODELO_URNA'].isin(modelo_escolhido)]
+
+sem_capital = st.checkbox('Sem a capital')
 
 if show_mapa:
     places = do_places(uf_escolhida, dataframe)
