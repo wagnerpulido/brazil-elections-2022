@@ -48,6 +48,10 @@ def show_map_urnas(places, state):
         folium.Marker(
             location=[plc['latitude'], plc['longitude']],
             icon=folium.Icon(color=colors[plc['DS_MODELO_URNA']]),
-            tooltip=f"Municipio: {plc['NM_MUNICIPIO']},<BR> Zona: {plc['zona']}, Seção: {plc['secao']},<BR> Modelo Urna: {plc['DS_MODELO_URNA']}"
+            tooltip=f"""
+            Municipio: {plc['NM_MUNICIPIO']},<BR>
+            Nome: {plc['nome'] if plc['nome'] is not None else ''},<BR> 
+            Zona: {plc['zona']}, Seção: {plc['secao']},<BR> 
+            Modelo Urna: {plc['DS_MODELO_URNA']}"""
         ).add_to(mapa)
     st_mapa = st_folium(mapa, width=500, height=500)

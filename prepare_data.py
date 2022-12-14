@@ -1,3 +1,4 @@
+import streamlit as st
 import numpy as np
 import pandas as pd
 import os.path
@@ -36,9 +37,26 @@ def call_data(item):
 
 def read_df(file_name, cargo):
     iter_csv = pd.read_csv('data/' + file_name + ".csv", sep=';', encoding='latin-1', iterator=True, chunksize=10000)
-    dataframe = pd.concat([chunk[chunk["DS_CARGO_PERGUNTA"] == cargo] for chunk in iter_csv])
+    dataframe = pd.concat([chunk[
+                               (chunk["DS_CARGO_PERGUNTA"] == cargo)
+                           ] for chunk in iter_csv])
     dataframe = dataframe.drop(columns=drop_col)
     return dataframe
+
+@st.experimental_memo
+def read_df(file_name, cargo, cidades):
+    iter_csv = pd.read_csv('data/' + file_name + ".csv", sep=';', encoding='latin-1', iterator=True, chunksize=10000)
+    if len(cidades) > 0:
+        dataframe = pd.concat([chunk[
+                               (chunk["DS_CARGO_PERGUNTA"] == cargo)
+                             & (chunk["NM_MUNICIPIO"].isin(cidades))
+                           ] for chunk in iter_csv])
+    else:
+        dataframe = pd.concat([chunk[chunk["DS_CARGO_PERGUNTA"] == cargo] for chunk in iter_csv])
+
+    dataframe = dataframe.drop(columns=drop_col)
+    return dataframe
+
 
 def read_cidades(file_name):
     iter_csv = pd.read_csv('data/' + file_name + ".csv", sep=';', encoding='latin-1', iterator=True, chunksize=10000)
@@ -86,8 +104,8 @@ def read_data_places(uf):
              & (chunk['turno'] == 2)
          ] for chunk in iter_csv]
     )
-    places = df.groupby(['nome']).first()
-    places = places[places['latitude'].notna()]
+    #places = df.groupby(['nome']).first()
+    places = df[df['latitude'].notna()]
     return places
 
 def add_places(votes, places):
@@ -99,3 +117,10 @@ def do_places(uf, votes):
     call_data_places()
     places = read_data_places(uf)
     return add_places(votes, places)
+
+def get_cidades(uf):
+    url = f'https://servicodados.ibge.gov.br/api/v1/localidades/estados/{state_number[uf]}/municipios'
+    df = pd.read_json(url)
+    df = df[df.columns.intersection(['id', 'nome'])]
+    df['nome'] = df['nome'].str.upper()
+    return df['nome'].unique()

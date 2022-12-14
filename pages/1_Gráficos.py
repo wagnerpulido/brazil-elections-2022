@@ -1,41 +1,33 @@
+import pandas as pd
 import streamlit as st
 import altair as alt
 from mapa import *
 from prepare_data import *
 from prepare_geo_code import *
 
-col1, col2, col3 = st.columns(3)
-with col1:
-    #selecionar cargo
-    cargo_selecionado = st.selectbox('Escolha o cargo', cargos)
-with col2:
-    #selecionar estado
-    uf_escolhida = st.selectbox('Estado', estados)
-with col3:
-    #selecionar turno
-    turnos = ['1t', '2t']
-    turno_escolhido = st.selectbox('Turno', turnos)
+#selecionar cargo
+cargo_selecionado = st.sidebar.selectbox('Escolha o cargo', cargos)
+#selecionar estado
+uf_escolhida = st.sidebar.selectbox('Estado', estados)
+#selecionar turno
+turnos = ['1t', '2t']
+turno_escolhido = st.sidebar.selectbox('Turno', turnos)
+
+#selecionar cidades
+citys = st.sidebar.multiselect('Cidades', get_cidades(uf_escolhida))
+
+show_mapa = st.sidebar.checkbox('Mostrar mapa')
+show_distribuicao = st.sidebar.checkbox('Mostrar distribuição')
 
 # df padrão
 sem_capital = st.checkbox('Sem a capital')
-show_distribuicao = st.checkbox('Mostrar distribuição')
 
 # tratamento dos dados
 file_name = get_file_name(turno_escolhido, uf_escolhida)
 call_data(file_name)
-dataframe = read_df(file_name, cargo_selecionado)
-if sem_capital:
-    dataframe = drop_capitais(dataframe)
-
+dataframe = read_df(file_name, cargo_selecionado, citys)
 add_modelo_urna(dataframe)
 add_is2020(dataframe)
-
-# Selecionar cidade
-filtrar_por_cidade = st.checkbox('filtrar por cidade')
-cidades = dataframe['NM_MUNICIPIO'].unique().tolist()
-if filtrar_por_cidade:
-    cidade_escolhida = st.multiselect('Selecione a cidade', cidades)
-    dataframe = dataframe[dataframe['NM_MUNICIPIO'].isin(cidade_escolhida)]
 
 # Selecionar candidato
 filtrar_candidato = st.checkbox('filtrar por canditado')
@@ -67,13 +59,9 @@ if filtrar_por_modelo_urna:
     modelo_escolhido = st.multiselect('Selecione o modelo', modelos_urna)
     dataframe = dataframe[dataframe['DS_MODELO_URNA'].isin(modelo_escolhido)]
 
-# Show Map
-#df_by_city = add_ibge_code(dataframe, uf_escolhida)
-#show_map(df_by_city, uf_escolhida)
-
-# Mapa locais de votação
-places = do_places(uf_escolhida, dataframe)
-show_map_urnas(places, uf_escolhida)
+if show_mapa:
+    places = do_places(uf_escolhida, dataframe)
+    show_map_urnas(places, uf_escolhida)
 
 if show_distribuicao:
     # distribuição do modelo de urna por município
