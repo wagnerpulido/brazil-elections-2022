@@ -99,7 +99,7 @@ drop_not_cidade = ['DT_GERACAO', 'HH_GERACAO', 'ANO_ELEICAO', 'CD_TIPO_ELEICAO',
 
 drop_col = ['DT_GERACAO', 'HH_GERACAO', 'ANO_ELEICAO', 'CD_TIPO_ELEICAO',
        'NM_TIPO_ELEICAO', 'CD_PLEITO', 'DT_PLEITO', 'NR_TURNO', 'CD_ELEICAO',
-       'DS_ELEICAO', 'SG_UF', 'CD_MUNICIPIO',
+       'DS_ELEICAO', 'SG_UF',
        'NR_LOCAL_VOTACAO', 'CD_CARGO_PERGUNTA',
        'NM_PARTIDO',
        'DT_BU_RECEBIDO', 'QT_APTOS', 'QT_COMPARECIMENTO', 'QT_ABSTENCOES',
@@ -121,7 +121,7 @@ cores = ['#00bfff', '#120075', '#c4122d','#FE8E6D', '#00aa4f', '#3b484e','#F3701
          '#00C2BB', '#2cb53f', '#ff6600','#006f41', '#0080FF', '#DA251C','#ff0000', '#000000', '#c92127',
          '#9F030A', '#3b484e', '#FEFEFE', '#FEFEFE']
 
-# ['NM_MUNICIPIO', 'DS_CARGO_PERGUNTA', 'NR_URNA_EFETIVADA', 'QT_VOTOS', 'NR_PARTIDO', 'SG_PARTIDO', 'NM_VOTAVEL', 'NR_ZONA', 'NR_SECAO']
+# ['CD_MUNICIPIO', 'NM_MUNICIPIO', 'DS_CARGO_PERGUNTA', 'NR_URNA_EFETIVADA', 'QT_VOTOS', 'NR_PARTIDO', 'SG_PARTIDO', 'NM_VOTAVEL', 'NR_ZONA', 'NR_SECAO']
 
 root_host = "https://cdn.tse.jus.br/estatistica/sead/eleicoes/eleicoes2022/buweb/"
 
