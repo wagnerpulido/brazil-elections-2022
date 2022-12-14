@@ -78,7 +78,7 @@ def drop_capitais(df):
     return df
 
 def read_data_places(uf):
-    iter_csv = pd.read_csv('data/_perfil_eleitorado_local_votacao_2022.csv', iterator=True, chunksize=10000)
+    iter_csv = pd.read_csv('data/perfil_eleitorado_local_votacao_2022.csv', iterator=True, chunksize=10000)
     df = pd.concat(
         [chunk[
              (chunk['sigla_uf'] == uf)

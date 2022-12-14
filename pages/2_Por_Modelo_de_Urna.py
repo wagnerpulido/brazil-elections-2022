@@ -68,7 +68,7 @@ if filtrar_por_modelo_urna:
     dataframe = dataframe[dataframe['DS_MODELO_URNA'].isin(modelo_escolhido)]
 
 # Show Map
-df_by_city = add_ibge_code(dataframe, uf_escolhida)
+#df_by_city = add_ibge_code(dataframe, uf_escolhida)
 #show_map(df_by_city, uf_escolhida)
 
 # Mapa locais de votação
