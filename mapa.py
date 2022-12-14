@@ -37,30 +37,17 @@ def show_map(df, state):
     st_mapa = st_folium(mapa, width=500, height=500)
 
 
-def read_data_places(uf):
-    iter_csv = pd.read_csv('data/perfil_eleitorado_local_votacao_2022.csv', iterator=True, chunksize=10000)
-    df = pd.concat(
-        [chunk[
-             (chunk['sigla_uf'] == uf)
-             & (chunk['tipo_secao_agregada'] == 'principal')
-             & (chunk['turno'] == 2)
-         ] for chunk in iter_csv]
-    )
-    places = df.groupby(['nome']).first()
-    places = places[places['latitude'].notna()]
-    return places
-
-
-def show_map_urnas(state):
+def show_map_urnas(places, state):
     mapa = folium.Map(
         location= states_center[state] ,
         zoom_start=6,
         tile='MapQuest Open Aerial',
         scrollWheelZoom=False
     )
-    places = read_data_places(state)
     for _, plc in places.iterrows():
         folium.Marker(
             location=[plc['latitude'], plc['longitude']],
+            icon=folium.Icon(color=colors[plc['DS_MODELO_URNA']]),
+            tooltip=f"Municipio: {plc['NM_MUNICIPIO']},<BR> Zona: {plc['zona']}, Seção: {plc['secao']},<BR> Modelo Urna: {plc['DS_MODELO_URNA']}"
         ).add_to(mapa)
     st_mapa = st_folium(mapa, width=500, height=500)

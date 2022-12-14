@@ -1,19 +1,20 @@
 import streamlit as st
 import altair as alt
-import pandas as pd
 from mapa import *
 from prepare_data import *
 from prepare_geo_code import *
 
-#selecionar cargo
-cargo_selecionado = st.selectbox('Escolha o cargo', cargos)
-
-#selecionar estado
-uf_escolhida = st.selectbox('Estado', estados)
-
-#selecionar turno
-turnos = ['1t', '2t']
-turno_escolhido = st.selectbox('Turno', turnos)
+col1, col2, col3 = st.columns(3)
+with col1:
+    #selecionar cargo
+    cargo_selecionado = st.selectbox('Escolha o cargo', cargos)
+with col2:
+    #selecionar estado
+    uf_escolhida = st.selectbox('Estado', estados)
+with col3:
+    #selecionar turno
+    turnos = ['1t', '2t']
+    turno_escolhido = st.selectbox('Turno', turnos)
 
 # df padrão
 sem_capital = st.checkbox('Sem a capital')
@@ -71,7 +72,8 @@ df_by_city = add_ibge_code(dataframe, uf_escolhida)
 #show_map(df_by_city, uf_escolhida)
 
 # Mapa locais de votação
-show_map_urnas(uf_escolhida)
+places = do_places(uf_escolhida, dataframe)
+show_map_urnas(places, uf_escolhida)
 
 if show_distribuicao:
     # distribuição do modelo de urna por município

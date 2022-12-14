@@ -132,3 +132,12 @@ capitais = ['RIO BRANCO','MACEIO','MACAPA','MANAUS','SALVADOR','FORTALEZA','VITO
 cargos = ['Presidente', 'Governador', 'Senador', 'Deputado Federal', 'Deputado Estadual']
 
 estados = ['AC','AL','AM','AP','BA','CE','DF','ES','GO','MA','MG','MS','MT','PA','PB','PE','PI','PR','RJ','RN','RO','RR','RS','SC','SE','SP','TO','ZZ']
+
+colors = {
+ '2020': 'blue',
+ '2015': 'pink',
+ '2013': 'darkred',
+ '2011': 'orange',
+ '2010': 'red',
+ '2009': 'purple',
+}
