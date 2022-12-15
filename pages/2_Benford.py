@@ -41,7 +41,7 @@ digito = st.sidebar.selectbox(
 bl = benfordslaw(alpha=0.05, pos=digito)
 X = pd.DataFrame(dataframe.groupby(['NM_MUNICIPIO'])['QT_VOTOS'].sum())
 results = bl.fit(X)
-fig, ax = bl.plot(title='Votos por zona')
+fig, ax = bl.plot(title='Votos por município')
 st.pyplot(fig)
 
 st.dataframe(X)
