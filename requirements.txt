@@ -9,3 +9,4 @@ geopandas
 gdown
 folium
 streamlit_folium
+benfordslaw
